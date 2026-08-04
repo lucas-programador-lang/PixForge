@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixForge — Forje suas imagens</title>
+<meta name="description" content="Redimensione, corte, gire, comprima, converta, aplique marca d'água e arredonde cantos de imagens, direto no navegador. Sem upload para servidor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="#top" class="nav__brand">
+      <span class="nav__mark">
+        <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+          <path d="M16 2 L27 8 L27 22 L16 30 L5 22 L5 8 Z" fill="none" stroke="url(#gradMark)" stroke-width="2"/>
+          <path d="M16 9 L21 12.5 L21 19.5 L16 23 L11 19.5 L11 12.5 Z" fill="url(#gradMark)" opacity="0.85"/>
+          <defs>
+            <linearGradient id="gradMark" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0" stop-color="#FF7A3D"/>
+              <stop offset="1" stop-color="#FFC24B"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      PixForge
+    </a>
+    <nav class="nav__links">
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="#redimensionar">Redimensionar</a>
+      <a href="#cortar">Cortar</a>
+      <a href="#girar">Girar</a>
+      <a href="#comprimir">Comprimir</a>
+      <a href="#converter">Converter</a>
+      <a href="#marca-dagua">Marca d'água</a>
+      <a href="#cantos">Cantos</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="sparkCanvas" class="hero__sparks" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Bigorna digital · 100% no seu navegador</p>
+      <h1 class="hero__title">Toda imagem<br><span class="grad-text">forjada</span> do jeito que você precisa.</h1>
+      <p class="hero__sub">Redimensione, corte, gire, comprima, converta, marque e arredonde. Sete ferramentas, um só lugar — e nenhum arquivo sai da sua máquina.</p>
+      <div class="hero__cta">
+        <a href="#ferramentas" class="btn btn--primary">Ver ferramentas</a>
+        <a href="#redimensionar" class="btn btn--ghost">Começar a forjar</a>
+      </div>
+      <p class="hero__note">Sem cadastro. Sem limite de uso. Sem envio para nuvem.</p>
+    </div>
+  </section>
+
+  <!-- TOOLS GRID -->
+  <section id="ferramentas" class="tools-grid-section">
+    <p class="section__eyebrow">O arsenal</p>
+    <h2 class="section__title">Escolha a ferramenta</h2>
+    <div class="tools-grid">
+      <a href="#redimensionar" class="tool-card">
+        <span class="tool-card__icon">↔</span>
+        <h3>Redimensionar</h3>
+        <p>Ajuste largura e altura mantendo (ou não) a proporção.</p>
+      </a>
+      <a href="#cortar" class="tool-card">
+        <span class="tool-card__icon">⛶</span>
+        <h3>Cortar</h3>
+        <p>Selecione a área exata e corte com precisão.</p>
+      </a>
+      <a href="#girar" class="tool-card">
+        <span class="tool-card__icon">↻</span>
+        <h3>Girar</h3>
+        <p>Rotação livre ou em passos de 90°, sem cortar bordas.</p>
+      </a>
+      <a href="#comprimir" class="tool-card">
+        <span class="tool-card__icon">◨</span>
+        <h3>Comprimir</h3>
+        <p>Reduza o tamanho do arquivo controlando a qualidade.</p>
+      </a>
+      <a href="#converter" class="tool-card">
+        <span class="tool-card__icon">⇄</span>
+        <h3>Converter</h3>
+        <p>Troque entre JPG, PNG e WEBP em segundos.</p>
+      </a>
+      <a href="#marca-dagua" class="tool-card">
+        <span class="tool-card__icon">✎</span>
+        <h3>Marca d'água</h3>
+        <p>Aplique texto com opacidade e posição personalizadas.</p>
+      </a>
+      <a href="#cantos" class="tool-card">
+        <span class="tool-card__icon">▢</span>
+        <h3>Cantos arredondados</h3>
+        <p>Suavize as bordas com raio ajustável e fundo transparente.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- TOOL: RESIZE -->
+  <section id="redimensionar" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">01</span>
+      <div>
+        <h2>Redimensionar imagem</h2>
+        <p>Defina novas dimensões em pixels. Trave a proporção para evitar distorção.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="resize">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <div class="field-row">
+          <label class="field">
+            <span>Largura (px)</span>
+            <input type="number" min="1" data-role="width">
+          </label>
+          <label class="field">
+            <span>Altura (px)</span>
+            <input type="number" min="1" data-role="height">
+          </label>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" data-role="lockRatio" checked>
+          <span>Manter proporção</span>
+        </label>
+        <div class="control-row control-row--presets" data-role="presets">
+          <button type="button" class="chip" data-w="1920" data-h="1080">1920×1080</button>
+          <button type="button" class="chip" data-w="1080" data-h="1080">1080×1080</button>
+          <button type="button" class="chip" data-w="800" data-h="600">800×600</button>
+          <button type="button" class="chip" data-w="640" data-h="360">640×360</button>
+        </div>
+        <div class="readout" data-role="readout"></div>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Aplicar</button>
+          <button class="btn btn--outline" data-action="download">Baixar PNG</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: CROP -->
+  <section id="cortar" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">02</span>
+      <div>
+        <h2>Cortar imagem</h2>
+        <p>Arraste para desenhar a área. Puxe os cantos para ajustar o tamanho do corte.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="crop">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <div class="crop-stage" data-role="cropStage" hidden>
+          <canvas class="dropzone__canvas" data-role="canvas"></canvas>
+          <div class="crop-box" data-role="cropBox">
+            <span class="crop-box__handle" data-handle="nw"></span>
+            <span class="crop-box__handle" data-handle="ne"></span>
+            <span class="crop-box__handle" data-handle="sw"></span>
+            <span class="crop-box__handle" data-handle="se"></span>
+          </div>
+        </div>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <div class="readout" data-role="readout">Área selecionada: —</div>
+        <div class="control-row control-row--presets">
+          <button type="button" class="chip" data-ratio="1:1">1:1</button>
+          <button type="button" class="chip" data-ratio="4:3">4:3</button>
+          <button type="button" class="chip" data-ratio="16:9">16:9</button>
+          <button type="button" class="chip" data-ratio="free">Livre</button>
+        </div>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Cortar</button>
+          <button class="btn btn--outline" data-action="download">Baixar PNG</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: ROTATE -->
+  <section id="girar" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">03</span>
+      <div>
+        <h2>Girar imagem</h2>
+        <p>Gire em passos de 90° ou ajuste o ângulo livremente — nada é cortado.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="rotate">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <div class="control-row">
+          <button type="button" class="btn btn--outline" data-action="rotate90ccw">↺ 90°</button>
+          <button type="button" class="btn btn--outline" data-action="rotate90cw">↻ 90°</button>
+          <button type="button" class="btn btn--outline" data-action="flipH">⇋ Espelhar</button>
+        </div>
+        <label class="field">
+          <span>Ângulo fino: <b data-role="angleLabel">0°</b></span>
+          <input type="range" min="-180" max="180" value="0" data-role="angle">
+        </label>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Aplicar giro</button>
+          <button class="btn btn--outline" data-action="download">Baixar PNG</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: COMPRESS -->
+  <section id="comprimir" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">04</span>
+      <div>
+        <h2>Comprimir imagem</h2>
+        <p>Reduza o tamanho do arquivo ajustando a qualidade. Veja a economia em tempo real.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="compress">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <p class="tool-hint" data-role="pngHint" hidden>
+          PNG detectado: esse formato é sem perdas, então o slider de qualidade quase não reduz o arquivo. Trocamos para <b>WEBP</b> automaticamente — ele comprime PNG muito melhor mantendo transparência. Prefere manter PNG mesmo assim? Use a ferramenta <a href="#converter">Converter</a>.
+        </p>
+        <label class="field">
+          <span>Formato de saída</span>
+          <select data-role="format">
+            <option value="image/jpeg">JPG</option>
+            <option value="image/webp">WEBP</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Qualidade: <b data-role="qualityLabel">75%</b></span>
+          <input type="range" min="1" max="100" value="75" data-role="quality">
+        </label>
+        <div class="readout readout--split" data-role="readout">
+          <div><span>Original</span><b data-role="sizeBefore">—</b></div>
+          <div><span>Comprimido</span><b data-role="sizeAfter">—</b></div>
+          <div><span>Economia</span><b data-role="sizeSaved" class="accent">—</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Recalcular</button>
+          <button class="btn btn--outline" data-action="download">Baixar</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: CONVERT -->
+  <section id="converter" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">05</span>
+      <div>
+        <h2>Converter formato</h2>
+        <p>Transforme sua imagem entre JPG, PNG e WEBP sem perder as configurações.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="convert">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <div class="readout" data-role="readout">Formato original: —</div>
+        <label class="field">
+          <span>Converter para</span>
+          <select data-role="format">
+            <option value="image/jpeg">JPG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WEBP</option>
+          </select>
+        </label>
+        <label class="field" data-role="qualityWrap">
+          <span>Qualidade: <b data-role="qualityLabel">85%</b></span>
+          <input type="range" min="1" max="100" value="85" data-role="quality">
+        </label>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Converter</button>
+          <button class="btn btn--outline" data-action="download">Baixar</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: WATERMARK -->
+  <section id="marca-dagua" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">06</span>
+      <div>
+        <h2>Marca d'água</h2>
+        <p>Adicione um texto com a posição, cor, tamanho e opacidade que quiser.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="watermark">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <label class="field">
+          <span>Texto</span>
+          <input type="text" data-role="text" value="PixForge" maxlength="60">
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Tamanho: <b data-role="sizeLabel">40px</b></span>
+            <input type="range" min="10" max="200" value="40" data-role="size">
+          </label>
+          <label class="field">
+            <span>Cor</span>
+            <input type="color" data-role="color" value="#ffffff">
+          </label>
+        </div>
+        <label class="field">
+          <span>Opacidade: <b data-role="opacityLabel">60%</b></span>
+          <input type="range" min="0" max="100" value="60" data-role="opacity">
+        </label>
+        <div class="grid9" data-role="position">
+          <button type="button" class="grid9__dot" data-pos="top-left"></button>
+          <button type="button" class="grid9__dot" data-pos="top-center"></button>
+          <button type="button" class="grid9__dot" data-pos="top-right"></button>
+          <button type="button" class="grid9__dot" data-pos="middle-left"></button>
+          <button type="button" class="grid9__dot grid9__dot--active" data-pos="center"></button>
+          <button type="button" class="grid9__dot" data-pos="middle-right"></button>
+          <button type="button" class="grid9__dot" data-pos="bottom-left"></button>
+          <button type="button" class="grid9__dot" data-pos="bottom-center"></button>
+          <button type="button" class="grid9__dot" data-pos="bottom-right"></button>
+        </div>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Aplicar</button>
+          <button class="btn btn--outline" data-action="download">Baixar PNG</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL: ROUND CORNERS -->
+  <section id="cantos" class="tool-panel">
+    <div class="tool-panel__head">
+      <span class="tool-panel__num">07</span>
+      <div>
+        <h2>Cantos arredondados</h2>
+        <p>Suavize as bordas da imagem. O resultado sai em PNG com fundo transparente.</p>
+      </div>
+    </div>
+    <div class="tool-panel__body" data-tool="roundcorners">
+      <div class="dropzone" data-role="dropzone">
+        <input type="file" accept="image/*" data-role="fileInput" hidden>
+        <div class="dropzone__empty" data-role="empty">
+          <span class="dropzone__icon">＋</span>
+          <p>Arraste uma imagem ou <span class="dropzone__link">clique para escolher</span></p>
+          <span class="dropzone__hint">JPG, PNG ou WEBP</span>
+        </div>
+        <canvas class="dropzone__canvas dropzone__canvas--checker" data-role="canvas" hidden></canvas>
+      </div>
+      <div class="controls" data-role="controls" hidden>
+        <label class="field">
+          <span>Raio: <b data-role="radiusLabel">24px</b></span>
+          <input type="range" min="0" max="300" value="24" data-role="radius">
+        </label>
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply">Aplicar</button>
+          <button class="btn btn--outline" data-action="download">Baixar PNG</button>
+          <button class="btn btn--text" data-action="reset">Trocar imagem</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <span class="nav__brand nav__brand--small">
+      <span class="nav__mark">
+        <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true">
+          <path d="M16 2 L27 8 L27 22 L16 30 L5 22 L5 8 Z" fill="none" stroke="url(#gradMark2)" stroke-width="2"/>
+          <path d="M16 9 L21 12.5 L21 19.5 L16 23 L11 19.5 L11 12.5 Z" fill="url(#gradMark2)" opacity="0.85"/>
+          <defs>
+            <linearGradient id="gradMark2" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0" stop-color="#FF7A3D"/>
+              <stop offset="1" stop-color="#FFC24B"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      PixForge
+    </span>
+    <p>Processamento 100% local, no seu navegador. Nenhuma imagem é enviada para qualquer servidor.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
