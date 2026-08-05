@@ -1,6 +1,13 @@
 /* =========================================================
    PixForge — script.js
    Todas as ferramentas rodam 100% no navegador via Canvas API.
+
+   Índice:
+   1. Utilidades gerais (imagem, blob, download, bytes)
+   2. Dropzone genérica (compartilhada por todas as ferramentas)
+   3. Ferramentas 01–07 (uma IIFE por ferramenta, isoladas)
+   4. Navegação — menu mobile + scrollspy
+   5. Hero — partículas de faísca em canvas
    ========================================================= */
 (function () {
   "use strict";
@@ -696,6 +703,50 @@
   })();
 
   /* ===========================================================
+     Navegação — menu mobile + scrollspy
+     =========================================================== */
+  (function initNav() {
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
+
+    toggle.addEventListener("click", () => {
+      const open = links.classList.toggle("is-open");
+      toggle.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+
+    const navAnchors = Array.from(links.querySelectorAll("a"));
+    navAnchors.forEach((a) => {
+      a.addEventListener("click", () => {
+        links.classList.remove("is-open");
+        toggle.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    const sections = navAnchors
+      .map((a) => document.querySelector(a.getAttribute("href")))
+      .filter(Boolean);
+
+    if ("IntersectionObserver" in window && sections.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const id = "#" + entry.target.id;
+            navAnchors.forEach((a) =>
+              a.classList.toggle("is-active", a.getAttribute("href") === id)
+            );
+          });
+        },
+        { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+  })();
+
+  /* ===========================================================
      Hero — partículas de faísca (canvas de fundo)
      =========================================================== */
   (function initSparks() {
@@ -716,7 +767,7 @@
     }
 
     function spawn() {
-      const colors = ["#FF7A3D", "#FFC24B", "#FF9A5A"];
+      const colors = ["#C9793D", "#E8B563", "#F3DDA8"];
       return {
         x: Math.random() * w,
         y: h + 10,
